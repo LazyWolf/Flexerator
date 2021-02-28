@@ -126,7 +126,7 @@ namespace Flexerator
             this.btnConvert.TabIndex = 5;
             this.btnConvert.Text = "▼";
             this.btnConvert.UseVisualStyleBackColor = false;
-            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            this.btnConvert.Click += new System.EventHandler(this.BtnConvert_OnClick);
             // 
             // panel1
             // 
@@ -193,7 +193,7 @@ namespace Flexerator
             this.chLabels.Text = "Row/Col Labels";
             this.chLabels.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chLabels.UseVisualStyleBackColor = false;
-            this.chLabels.CheckedChanged += new System.EventHandler(this.chLabels_CheckedChanged);
+            this.chLabels.CheckedChanged += new System.EventHandler(this.ChLabels_OnCheckedChanged);
             // 
             // chNotation
             // 
@@ -213,7 +213,7 @@ namespace Flexerator
             this.chNotation.Text = "Arrow Notation";
             this.chNotation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chNotation.UseVisualStyleBackColor = false;
-            this.chNotation.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.chNotation.CheckedChanged += new System.EventHandler(this.ChNotation_OnCheckedChanged);
             // 
             // panel4
             // 
@@ -460,7 +460,7 @@ namespace Flexerator
             this.btnClearStyles.TabIndex = 24;
             this.btnClearStyles.Text = "Clear Styles";
             this.btnClearStyles.UseVisualStyleBackColor = false;
-            this.btnClearStyles.Click += new System.EventHandler(this.btnClearStyles_Click);
+            this.btnClearStyles.Click += new System.EventHandler(this.BtnClearStyles_ButtonOnClick);
             // 
             // Flexerator
             // 

@@ -28,7 +28,7 @@ namespace Flexerator
             return newFlexItem;
         }
 
-        public string Report(bool labels)
+        public string Report(bool labels=false)
         {
             string indent = new string(' ', Depth * 2);
             string label = (labels && !ClassName.StartsWith("wrap") ? $"<span class=\"container-label\">{ClassName}</span>" : "");

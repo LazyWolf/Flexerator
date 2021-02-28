@@ -9,24 +9,68 @@ namespace Flexerator
 {
     public partial class Flexerator : Form
     {
+        private const string arrowNotationDefault = "[>][>]\n[>[v][v][v]] [v[>][>]]\n[v[>][>][>]]\n[^[<][<]] [<[^][^]]";
+        private const string boxNotationDefault = "[][]\n[()()()()()]\n([][][][][])";
+
         public Flexerator()
         {
             InitializeComponent();
         }
 
-        private void btnConvert_Click(object sender, EventArgs e)
+        private void BtnConvert_OnClick(object sender, EventArgs e)
         {
             if(chNotation.Checked)
             {
-                parseAnnotatedToFlex(rtbInput.Text.Trim());
+                ParseArrowAnnotationToFlex(rtbInput.Text.Trim());
             }
             else
             {
-                parseToFlex(rtbInput.Text.Trim());
+                ParseBraceNotationToFlex(rtbInput.Text.Trim());
             }
         }
 
-        private void parseAnnotatedToFlex(string input)
+        private void ChLabels_OnCheckedChanged(object sender, EventArgs e)
+        {
+            chLabels.ForeColor = chLabels.Checked ? Color.Black : Color.White;
+            if (chLabels.Checked)
+            {
+                chLabels.Text = "Row/Col Labels";
+            }
+            else
+            {
+                chLabels.Text = "No Labels";
+            }
+        }
+
+        private void ChNotation_OnCheckedChanged(object sender, EventArgs e)
+        {
+            chNotation.ForeColor = chNotation.Checked ? Color.Black : Color.White;
+            if (chNotation.Checked)
+            {
+                chNotation.Text = "Arrow Notation";
+                if(rtbInput.Text == boxNotationDefault)
+                {
+                    rtbInput.Text = arrowNotationDefault;
+                }
+            }
+            else
+            {
+                if (rtbInput.Text == arrowNotationDefault)
+                {
+                    rtbInput.Text = boxNotationDefault;
+                }
+                chNotation.Text = "Brace Notation";
+            }
+        }
+
+        private void BtnClearStyles_ButtonOnClick(object sender, EventArgs e)
+        {
+            tbRowStyle.Clear();
+            tbColStyle.Clear();
+            tbWraStyle.Clear();
+        }
+
+        private void ParseArrowAnnotationToFlex(string input)
         {
             // Init
             FlexItem currentFlexItem = new FlexItem(className: $"{tbWraPre.Text}-1");
@@ -89,7 +133,7 @@ namespace Flexerator
 
             // CSS Output
             string labelStyle = chLabels.Checked ? ".container-label {\n  position: absolute;\n top: 1px;\n left: 1px;\n padding: 2px;\n " +
-                "border: 1px solid #000;\n border-radius: 3px;\n color: #59f9ff;\n text-shadow: 2px 2px #000, 0px 2px #000;\n " +
+                "border: 1px solid #000;\n border-radius: 3px;\n color: #59f9ff;\n text-shadow: 2px 2px #000;\n " +
                 "background: #446;\n\n}\n\n" : "";
 
             string extraWrapStyle = string.Join(";\n  ", tbWraStyle.Text.Split(';').Select(e => e.Trim()));
@@ -98,8 +142,8 @@ namespace Flexerator
 
             string extraRowStyle = string.Join(";\n  ", tbRowStyle.Text.Split(';').Select(e => e.Trim()));
             string rowStyle = rows.Count > 0 ? "." + String.Join(", .", rows.Select(r => r.ClassName))
-                                + " {\n  " 
-                                + (chLabels.Checked ? "  position: relative;\n  " : "") 
+                                + " {\n  "
+                                + (chLabels.Checked ? "  position: relative;\n  " : "")
                                 + "display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  flex: 1;\n  "
                                 + $"{extraRowStyle.Trim()}\n}}\n\n" : "";
             string rowRevStyle = rowRevs.Count > 0 ? "." + String.Join(", .", rowRevs.Select(rr => rr.ClassName))
@@ -123,7 +167,7 @@ namespace Flexerator
             rtbOutputCss.Text = $"{labelStyle}{wrapStyle}{rowStyle}{rowRevStyle}{colStyle}{colRevStyle}".Trim();
         }
 
-        private void parseToFlex(string input)
+        private void ParseBraceNotationToFlex(string input)
         {
             // Init
             string[] htmlOut = input.Select(x => $"{x}").ToArray();
@@ -181,7 +225,7 @@ namespace Flexerator
             {
                 cssOut += " {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  flex: 1;\n  " + $"{extraRowStyle.Trim()}\n}}\n\n";
             }
-                                
+
 
             for (int i = 1; i < col; i++)
             {
@@ -203,50 +247,6 @@ namespace Flexerator
             cssOut += " {\n  display: flex;\n  " + $"{extraWrapStyle.Trim()}\n}}\n\n";
 
             rtbOutputCss.Text = cssOut;
-        }
-
-        private void chLabels_CheckedChanged(object sender, EventArgs e)
-        {
-            chLabels.ForeColor = chLabels.Checked ? Color.Black : Color.White;
-            if (chLabels.Checked)
-            {
-                chLabels.Text = "Row/Col Labels";
-            }
-            else
-            {
-                chLabels.Text = "No Labels";
-            }
-        }
-
-        private const string arrowNotationDefault = "[>][>]\n[>[v][v][v]] [v[>][>]]\n[v[>][>][>]]\n[^[<][<]] [<[^][^]]";
-        private const string boxNotationDefault = "[][]\n[()()()()()]\n([][][][][])";
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            chNotation.ForeColor = chNotation.Checked ? Color.Black : Color.White;
-            if (chNotation.Checked)
-            {
-                chNotation.Text = "Arrow Notation";
-                if(rtbInput.Text == boxNotationDefault)
-                {
-                    rtbInput.Text = arrowNotationDefault;
-                }
-            }
-            else
-            {
-                if (rtbInput.Text == arrowNotationDefault)
-                {
-                    rtbInput.Text = boxNotationDefault;
-                }
-                chNotation.Text = "Brace Notation";
-            }
-        }
-
-        private void btnClearStyles_Click(object sender, EventArgs e)
-        {
-            tbRowStyle.Clear();
-            tbColStyle.Clear();
-            tbWraStyle.Clear();
         }
     }
 }
