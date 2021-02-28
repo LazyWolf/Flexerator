@@ -31,22 +31,23 @@ namespace Flexerator
 
         private void ChLabels_OnCheckedChanged(object sender, EventArgs e)
         {
-            chLabels.ForeColor = chLabels.Checked ? Color.Black : Color.White;
             if (chLabels.Checked)
             {
+                chLabels.ForeColor = Color.Black;
                 chLabels.Text = "Row/Col Labels";
             }
             else
             {
+                chLabels.ForeColor = Color.White;
                 chLabels.Text = "No Labels";
             }
         }
 
         private void ChNotation_OnCheckedChanged(object sender, EventArgs e)
         {
-            chNotation.ForeColor = chNotation.Checked ? Color.Black : Color.White;
             if (chNotation.Checked)
             {
+                chNotation.ForeColor = Color.Black;
                 chNotation.Text = "Arrow Notation";
                 if(rtbInput.Text == boxNotationDefault)
                 {
@@ -55,6 +56,7 @@ namespace Flexerator
             }
             else
             {
+                chNotation.ForeColor = Color.White;
                 if (rtbInput.Text == arrowNotationDefault)
                 {
                     rtbInput.Text = boxNotationDefault;
@@ -129,17 +131,21 @@ namespace Flexerator
             }
 
             // HTML Output
-            rtbOutputHtml.Text = String.Join("\n", wraps.Select(w => w.Report(chLabels.Checked))).Trim();
+            rtbOutputHtml.Text = String.Join("\n", wraps.Select(w => w.Report(chLabels.Checked, tbWraPre.Text))).Trim();
 
             // CSS Output
-            string labelStyle = chLabels.Checked ? ".container-label {\n  position: absolute;\n top: 1px;\n left: 1px;\n padding: 2px;\n " +
-                "border: 1px solid #000;\n border-radius: 3px;\n color: #59f9ff;\n text-shadow: 2px 2px #000;\n " +
-                "background: #446;\n\n}\n\n" : "";
 
+              // Label Styling
+            string labelStyle = chLabels.Checked ? ".container-label {\n  position: absolute;\n  top: 1px;\n  left: 1px;\n  padding: 2px;\n  " +
+                "border: 1px solid #000;\n  border-radius: 3px;\n  color: #59f9ff;\n  text-shadow: 2px 2px #000;\n  " +
+                "background: #446;\n}\n\n" : "";
+
+              // Wrap Styling
             string extraWrapStyle = string.Join(";\n  ", tbWraStyle.Text.Split(';').Select(e => e.Trim()));
             string wrapStyle = wraps.Count > 0 ? "." + String.Join(", .", wraps.Select(r => r.ClassName)) + " {\n  display: flex;\n  "
                                 + $"{extraWrapStyle.Trim()}\n}}\n\n" : "";
 
+              // Row Styling
             string extraRowStyle = string.Join(";\n  ", tbRowStyle.Text.Split(';').Select(e => e.Trim()));
             string rowStyle = rows.Count > 0 ? "." + String.Join(", .", rows.Select(r => r.ClassName))
                                 + " {\n  "
@@ -152,6 +158,7 @@ namespace Flexerator
                                 + "display: flex;\n  flex-direction: row-reverse;\n  flex-wrap: wrap;\n  flex: 1;\n  "
                                 + $"{extraRowStyle.Trim()}\n}}\n\n" : "";
 
+              // Column Styling
             string extraColStyle = string.Join(";\n  ", tbColStyle.Text.Split(';').Select(e => e.Trim()));
             string colStyle = cols.Count > 0 ? "." + String.Join(", .", cols.Select(c => c.ClassName))
                                 + " {\n  "
@@ -171,9 +178,9 @@ namespace Flexerator
         {
             // Init
             string[] htmlOut = input.Select(x => $"{x}").ToArray();
-            int row = 1;
-            int col = 1;
-            int wrap = 2;
+            int nextRow = 1;
+            int nextCol = 1;
+            int nextWrap = 2;
             int depth = 0;
             var openContainers = new List<string>();
 
@@ -184,17 +191,17 @@ namespace Flexerator
                 {
                     case "[":
                         depth += 1;
-                        string rowLabel = chLabels.Checked ? $"<span style=\"position: absolute; margin: -21px 0 0 -21px\">row-{row}</span>" : "";
+                        string rowLabel = chLabels.Checked ? $"<span class=\"container-label\">row-{nextRow}</span>" : "";
 
-                        htmlOut[i] = new String(' ', depth * 2) + $"<div class=\"{tbRowPre.Text}-{row}\">" + rowLabel + "\n";
-                        row += 1;
+                        htmlOut[i] = new String(' ', depth * 2) + $"<div class=\"{tbRowPre.Text}-{nextRow}\">" + rowLabel + "\n";
+                        nextRow += 1;
                         break;
                     case "(":
                         depth += 1;
-                        string colLabel = chLabels.Checked ? $"<span style=\"position: absolute; margin: -21px 0 0 -21px\">col-{col}</span>" : "";
+                        string colLabel = chLabels.Checked ? $"<span class=\"container-label\">col-{nextCol}</span>" : "";
 
-                        htmlOut[i] = new String(' ', depth * 2) + $"<div class=\"{tbColPre.Text}-{col}\">" + colLabel + "\n";
-                        col += 1;
+                        htmlOut[i] = new String(' ', depth * 2) + $"<div class=\"{tbColPre.Text}-{nextCol}\">" + colLabel + "\n";
+                        nextCol += 1;
                         break;
                     case "]":
                     case ")":
@@ -202,8 +209,8 @@ namespace Flexerator
                         depth -= 1;
                         break;
                     case "\n":
-                        htmlOut[i] = new String(' ', depth * 2) + $"</div>\n<div class=\"{tbWraPre.Text}-{wrap}\">\n";
-                        wrap++;
+                        htmlOut[i] = new String(' ', depth * 2) + $"</div>\n<div class=\"{tbWraPre.Text}-{nextWrap}\">\n";
+                        nextWrap++;
                         break;
                     default:
                         htmlOut[i] = "";
@@ -214,33 +221,42 @@ namespace Flexerator
             rtbOutputHtml.Text = "<div class=\"flap-1\">\n" + String.Join("", htmlOut) + "</div>";
 
             // CSS Output
-            string cssOut = "";
-            for (int i = 1; i < row; i++)
+            string cssOut = chLabels.Checked ? ".container-label {\n  position: absolute;\n  top: 1px;\n  left: 1px;\n  padding: 2px;\n  " +
+                "border: 1px solid #000;\n  border-radius: 3px;\n  color: #59f9ff;\n  text-shadow: 2px 2px #000;\n  " +
+                "background: #446;\n}\n\n" : "";
+
+              // Row Styling
+            for (int i = 1; i < nextRow; i++)
             {
-                cssOut += $".{tbRowPre.Text}-{i}" + (i < row - 1 ? "," : "");
+                cssOut += $".{tbRowPre.Text}-{i}" + (i < nextRow - 1 ? "," : "");
             }
 
             string extraRowStyle = string.Join(";\n  ", tbRowStyle.Text.Split(';').Select(e => e.Trim()));
-            if (row > 1)
+            if (nextRow > 1)
             {
-                cssOut += " {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  flex: 1;\n  " + $"{extraRowStyle.Trim()}\n}}\n\n";
+                cssOut += " {\n  "
+                    + (chLabels.Checked ? "  position: relative;\n  " : "")
+                    + "display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  flex: 1;\n  " + $"{extraRowStyle.Trim()}\n}}\n\n";
             }
 
-
-            for (int i = 1; i < col; i++)
+              // Column Styling
+            for (int i = 1; i < nextCol; i++)
             {
-                cssOut += $".{tbColPre.Text}-{i}" + (i < col - 1 ? "," : "");
+                cssOut += $".{tbColPre.Text}-{i}" + (i < nextCol - 1 ? "," : "");
             }
 
             string extraColStyle = string.Join(";\n  ", tbColStyle.Text.Split(';').Select(e => e.Trim()));
-            if (col > 1)
+            if (nextCol > 1)
             {
-                cssOut += " {\n  display: flex;\n  flex-direction: column;\n  flex-wrap: wrap;\n  flex: 1;\n  " + $"{extraColStyle.Trim()}\n}}\n\n";
+                cssOut += " {\n  "
+                    + (chLabels.Checked ? "  position: relative;\n  " : "")
+                    + "display: flex;\n  flex-direction: column;\n  flex-wrap: wrap;\n  flex: 1;\n  " + $"{extraColStyle.Trim()}\n}}\n\n";
             }
 
-            for (int i = 1; i < wrap; i++)
+              // Wrap Styling
+            for (int i = 1; i < nextWrap; i++)
             {
-                cssOut += $".{tbWraPre.Text}-{i}" + (i < col - 1 ? "," : "");
+                cssOut += $".{tbWraPre.Text}-{i}" + (i < nextCol - 1 ? "," : "");
             }
 
             string extraWrapStyle = string.Join(";\n  ", tbWraStyle.Text.Split(';').Select(e => e.Trim()));

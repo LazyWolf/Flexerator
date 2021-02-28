@@ -28,10 +28,10 @@ namespace Flexerator
             return newFlexItem;
         }
 
-        public string Report(bool labels=false)
+        public string Report(bool labels=false, string wrapPrefix = "wrap")
         {
             string indent = new string(' ', Depth * 2);
-            string label = (labels && !ClassName.StartsWith("wrap") ? $"<span class=\"container-label\">{ClassName}</span>" : "");
+            string label = (labels && !ClassName.StartsWith(wrapPrefix) ? $"<span class=\"container-label\">{ClassName}</span>" : "");
             string output = indent + $"<div class=\"{ClassName}\">" + label + (Children.Count > 0 ? "\n" : "");
             foreach (FlexItem child in Children)
             {
