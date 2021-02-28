@@ -39,6 +39,7 @@ namespace Flexerator
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.chLabels = new System.Windows.Forms.CheckBox();
+            this.chNotation = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
@@ -47,13 +48,16 @@ namespace Flexerator
             // 
             this.rtbInput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.rtbInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbInput.DetectUrls = false;
             this.rtbInput.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtbInput.ForeColor = System.Drawing.Color.White;
+            this.rtbInput.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.rtbInput.Location = new System.Drawing.Point(22, 23);
             this.rtbInput.Name = "rtbInput";
             this.rtbInput.Size = new System.Drawing.Size(626, 178);
             this.rtbInput.TabIndex = 0;
-            this.rtbInput.Text = "[][]\n[()()()]([][])\n([][][][][])";
+            this.rtbInput.Text = "[>][>]\n[>[v][v][v]] [v[>][>]]\n[v[>][>][>]]\n[v[<][<]] [>[^][^]]";
+            this.rtbInput.ZoomFactor = 1.2F;
             // 
             // rtbOutputHtml
             // 
@@ -89,9 +93,9 @@ namespace Flexerator
             this.btnConvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConvert.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnConvert.ForeColor = System.Drawing.Color.White;
-            this.btnConvert.Location = new System.Drawing.Point(282, 254);
+            this.btnConvert.Location = new System.Drawing.Point(284, 272);
             this.btnConvert.Name = "btnConvert";
-            this.btnConvert.Size = new System.Drawing.Size(104, 36);
+            this.btnConvert.Size = new System.Drawing.Size(103, 36);
             this.btnConvert.TabIndex = 5;
             this.btnConvert.Text = "▼";
             this.btnConvert.UseVisualStyleBackColor = false;
@@ -151,16 +155,39 @@ namespace Flexerator
             this.chLabels.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
             this.chLabels.Checked = true;
             this.chLabels.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chLabels.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.chLabels.FlatAppearance.CheckedBackColor = System.Drawing.Color.Aqua;
             this.chLabels.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chLabels.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chLabels.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.chLabels.Location = new System.Drawing.Point(286, 228);
+            this.chLabels.Location = new System.Drawing.Point(285, 217);
             this.chLabels.Name = "chLabels";
-            this.chLabels.Size = new System.Drawing.Size(96, 23);
+            this.chLabels.Size = new System.Drawing.Size(101, 23);
             this.chLabels.TabIndex = 11;
             this.chLabels.Text = "Container Labels";
+            this.chLabels.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chLabels.UseVisualStyleBackColor = false;
             this.chLabels.CheckedChanged += new System.EventHandler(this.chLabels_CheckedChanged);
+            // 
+            // chNotation
+            // 
+            this.chNotation.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chNotation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.chNotation.Checked = true;
+            this.chNotation.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chNotation.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.chNotation.FlatAppearance.CheckedBackColor = System.Drawing.Color.Aqua;
+            this.chNotation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chNotation.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chNotation.ForeColor = System.Drawing.Color.Black;
+            this.chNotation.Location = new System.Drawing.Point(285, 244);
+            this.chNotation.Name = "chNotation";
+            this.chNotation.Size = new System.Drawing.Size(101, 23);
+            this.chNotation.TabIndex = 12;
+            this.chNotation.Text = "Arrow Notation";
+            this.chNotation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chNotation.UseVisualStyleBackColor = false;
+            this.chNotation.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // Flexerator
             // 
@@ -168,6 +195,7 @@ namespace Flexerator
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.ClientSize = new System.Drawing.Size(669, 546);
+            this.Controls.Add(this.chNotation);
             this.Controls.Add(this.chLabels);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -199,6 +227,7 @@ namespace Flexerator
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox chLabels;
+        private System.Windows.Forms.CheckBox chNotation;
     }
 }
 
