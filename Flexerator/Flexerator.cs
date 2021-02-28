@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Flexerator
@@ -22,55 +19,8 @@ namespace Flexerator
             parseToFlex(rtbInput.Text);
         }
 
-        //private Dictionary<string, BoxItem> containers;
-        //private List<string> openContainers;
-
-        private void parseFlexItems(string input)
-        {
-            string[] htmlOut = input.Select(x => $"{x}").ToArray();
-            FlexItem currentFlexItem = new FlexItem(type: "flap");
-
-            for (int i = 0; i < htmlOut.Length; i++)
-            {
-                switch (htmlOut[i])
-                {
-                    case "[":
-                        currentFlexItem = currentFlexItem.SpawnFlexItem(type: "row");
-                        break;
-                    case "]":
-                        currentFlexItem = currentFlexItem.Parent;
-                        break;
-                    case "\n":
-                        currentFlexItem = currentFlexItem.Parent == null ? new FlexItem() : currentFlexItem.Parent;
-                        break;
-                    case ">":
-                        currentFlexItem.Type = "row";
-                        currentFlexItem.Direction = "row";
-                        break;
-                    case "<":
-                        currentFlexItem.Type = "row-rev";
-                        currentFlexItem.Direction = "row-reverse";
-                        break;
-                    case "v":
-                        currentFlexItem.Type = "col";
-                        currentFlexItem.Direction = "column";
-                        break;
-                    case "^":
-                        currentFlexItem.Type = "col-rev";
-                        currentFlexItem.Direction = "column-reverse";
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
         private void parseToFlex(string input)
         {
-            
-            //containers = new Dictionary<string, BoxItem>();
-            //openContainers = new List<string>();
-
             string[] htmlOut = input.Select(x => $"{x}").ToArray();
             int row = 1;
             int col = 1;
@@ -84,8 +34,6 @@ namespace Flexerator
                 {
                     case "[":
                         depth += 1;
-                        //var containerName = $"row-{row}";
-                        //openContainers.Add(containerName);
                         string rowLabel = chLabels.Checked ? $"<span style=\"position: absolute; margin: -21px 0 0 -21px\">row-{row}</span>" : "";
 
                         htmlOut[i] = new String(' ', depth * 2) + $"<div class=\"row-{row}\">" + rowLabel + "\n";
@@ -138,26 +86,6 @@ namespace Flexerator
 
             rtbOutputCss.Text = cssOut;
         }
-
-        //private void openContainer(string containerName)
-        //{
-        //    containers[containerName] = new BoxItem();
-        //}
-
-        //private void addToContainer(string containerName)
-        //{
-        //    if(containers.ContainsKey(containerName) && containers[containerName].Open)
-        //    {
-        //        containers[containerName].Count += 1;
-        //    }
-        //}
-        //private void closeContainer(string containerName)
-        //{
-        //    if (containers.ContainsKey(containerName) && containers[containerName].Open)
-        //    {
-        //        containers[containerName].Open = false;
-        //    }
-        //}
 
         private void chLabels_CheckedChanged(object sender, EventArgs e)
         {
