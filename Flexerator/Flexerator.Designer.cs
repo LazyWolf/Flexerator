@@ -1,7 +1,7 @@
 ﻿
 namespace Flexerator
 {
-    partial class Form1
+    partial class Flexerator
     {
         /// <summary>
         /// Required designer variable.

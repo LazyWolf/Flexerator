@@ -20,9 +20,9 @@ namespace Flexerator
     //        Open = true;
     //    }
     //}
-    public partial class Form1 : Form
+    public partial class Flexerator : Form
     {
-        public Form1()
+        public Flexerator()
         {
             InitializeComponent();
         }
