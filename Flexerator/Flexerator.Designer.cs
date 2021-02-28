@@ -83,7 +83,7 @@ namespace Flexerator
             this.rtbInput.Name = "rtbInput";
             this.rtbInput.Size = new System.Drawing.Size(300, 178);
             this.rtbInput.TabIndex = 0;
-            this.rtbInput.Text = "[>][>]\n[>[v][v][v]] [v[>][>]]\n[v[>][>][>]]\n[v[<][<]] [>[^][^]]";
+            this.rtbInput.Text = "[>][>]\n[>[v][v][v]] [v[>][>]]\n[v[>][>][>]]\n[^[<][<]] [<[^][^]]";
             this.rtbInput.ZoomFactor = 1.2F;
             // 
             // rtbOutputHtml
@@ -367,7 +367,7 @@ namespace Flexerator
             this.tbRowStyle.Name = "tbRowStyle";
             this.tbRowStyle.Size = new System.Drawing.Size(468, 13);
             this.tbRowStyle.TabIndex = 12;
-            this.tbRowStyle.Text = "padding: 25px; background: #141414; color: #fff; border: 1px solid white;";
+            this.tbRowStyle.Text = "padding: 25px; background: #141414; color: #fff; border: 1px solid #fff;";
             // 
             // label6
             // 
@@ -402,7 +402,7 @@ namespace Flexerator
             this.tbColStyle.Name = "tbColStyle";
             this.tbColStyle.Size = new System.Drawing.Size(468, 13);
             this.tbColStyle.TabIndex = 12;
-            this.tbColStyle.Text = "padding: 25px; background: #eee; color: #000; border: 1px solid black;";
+            this.tbColStyle.Text = "padding: 25px; background: #eee; color: #000; border: 1px solid #000;";
             // 
             // label7
             // 

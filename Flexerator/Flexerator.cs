@@ -88,7 +88,9 @@ namespace Flexerator
             rtbOutputHtml.Text = String.Join("\n", wraps.Select(w => w.Report(chLabels.Checked))).Trim();
 
             // CSS Output
-            string labelStyle = chLabels.Checked ? ".container-label {\n  position: absolute;\n  margin: -21px 0 0 -21px;\n}\n\n" : "";
+            string labelStyle = chLabels.Checked ? ".container-label {\n  position: absolute;\n top: 1px;\n left: 1px;\n padding: 2px;\n " +
+                "border: 1px solid #000;\n border-radius: 3px;\n color: #59f9ff;\n text-shadow: 2px 2px #000, 0px 2px #000;\n " +
+                "background: #446;\n\n}\n\n" : "";
 
             string extraWrapStyle = string.Join(";\n  ", tbWraStyle.Text.Split(';').Select(e => e.Trim()));
             string wrapStyle = wraps.Count > 0 ? "." + String.Join(", .", wraps.Select(r => r.ClassName)) + " {\n  display: flex;\n  "
@@ -96,18 +98,26 @@ namespace Flexerator
 
             string extraRowStyle = string.Join(";\n  ", tbRowStyle.Text.Split(';').Select(e => e.Trim()));
             string rowStyle = rows.Count > 0 ? "." + String.Join(", .", rows.Select(r => r.ClassName))
-                                + " {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  flex: 1;\n  "
+                                + " {\n  " 
+                                + (chLabels.Checked ? "  position: relative;\n  " : "") 
+                                + "display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  flex: 1;\n  "
                                 + $"{extraRowStyle.Trim()}\n}}\n\n" : "";
             string rowRevStyle = rowRevs.Count > 0 ? "." + String.Join(", .", rowRevs.Select(rr => rr.ClassName))
-                                + " {\n  display: flex;\n  flex-direction: row-reverse;\n  flex-wrap: wrap;\n  flex: 1;\n  "
+                                + " {\n  "
+                                + (chLabels.Checked ? "  position: relative;\n  " : "")
+                                + "display: flex;\n  flex-direction: row-reverse;\n  flex-wrap: wrap;\n  flex: 1;\n  "
                                 + $"{extraRowStyle.Trim()}\n}}\n\n" : "";
 
             string extraColStyle = string.Join(";\n  ", tbColStyle.Text.Split(';').Select(e => e.Trim()));
             string colStyle = cols.Count > 0 ? "." + String.Join(", .", cols.Select(c => c.ClassName))
-                                + " {\n  display: flex;\n  flex-direction: column;\n  flex-wrap: wrap;\n  flex: 1;\n  "
+                                + " {\n  "
+                                + (chLabels.Checked ? "  position: relative;\n  " : "")
+                                + "display: flex;\n  flex-direction: column;\n  flex-wrap: wrap;\n  flex: 1;\n  "
                                 + $"{extraColStyle.Trim()}\n}}\n\n" : "";
             string colRevStyle = colRevs.Count > 0 ? "." + String.Join(", .", colRevs.Select(cr => cr.ClassName))
-                                + " {\n  display: flex;\n  flex-direction: column-reverse;\n  flex-wrap: wrap;\n  flex: 1;\n  "
+                                + " {\n  "
+                                + (chLabels.Checked ? "  position: relative;\n  " : "")
+                                + "display: flex;\n  flex-direction: column-reverse;\n  flex-wrap: wrap;\n  flex: 1;\n  "
                                 + $"{extraColStyle.Trim()}\n}}\n\n" : "";
 
             rtbOutputCss.Text = $"{labelStyle}{wrapStyle}{rowStyle}{rowRevStyle}{colStyle}{colRevStyle}".Trim();
@@ -208,7 +218,7 @@ namespace Flexerator
             }
         }
 
-        private const string arrowNotationDefault = "[>][>]\n[>[v][v][v]] [v[>][>]]\n[v[>][>][>]]\n[v[<][<]] [>[^][^]]";
+        private const string arrowNotationDefault = "[>][>]\n[>[v][v][v]] [v[>][>]]\n[v[>][>][>]]\n[^[<][<]] [<[^][^]]";
         private const string boxNotationDefault = "[][]\n[()()()()()]\n([][][][][])";
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
