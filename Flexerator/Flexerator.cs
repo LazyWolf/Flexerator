@@ -89,27 +89,27 @@ namespace Flexerator
 
             // CSS Output
             string labelStyle = chLabels.Checked ? ".container-label {\n  position: absolute;\n  margin: -21px 0 0 -21px;\n}\n\n" : "";
+
             string extraWrapStyle = string.Join(";\n  ", tbWraStyle.Text.Split(';').Select(e => e.Trim()));
             string wrapStyle = wraps.Count > 0 ? "." + String.Join(", .", wraps.Select(r => r.ClassName)) + " {\n  display: flex;\n  "
                                 + $"{extraWrapStyle.Trim()}\n}}\n\n" : "";
+
             string extraRowStyle = string.Join(";\n  ", tbRowStyle.Text.Split(';').Select(e => e.Trim()));
             string rowStyle = rows.Count > 0 ? "." + String.Join(", .", rows.Select(r => r.ClassName))
                                 + " {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  flex: 1;\n  "
                                 + $"{extraRowStyle.Trim()}\n}}\n\n" : "";
-            //+ "padding: 25px;\n  background: #141414;\n  color: #fff;\n  border: 1px solid white;\n}\n\n" : "";
             string rowRevStyle = rowRevs.Count > 0 ? "." + String.Join(", .", rowRevs.Select(rr => rr.ClassName))
                                 + " {\n  display: flex;\n  flex-direction: row-reverse;\n  flex-wrap: wrap;\n  flex: 1;\n  "
                                 + $"{extraRowStyle.Trim()}\n}}\n\n" : "";
-            //+ "padding: 25px;\n  background: #141414;\n  color: #fff;\n  border: 1px solid white;\n}\n\n" : "";
+
             string extraColStyle = string.Join(";\n  ", tbColStyle.Text.Split(';').Select(e => e.Trim()));
             string colStyle = cols.Count > 0 ? "." + String.Join(", .", cols.Select(c => c.ClassName))
                                 + " {\n  display: flex;\n  flex-direction: column;\n  flex-wrap: wrap;\n  flex: 1;\n  "
                                 + $"{extraColStyle.Trim()}\n}}\n\n" : "";
-            //+ "padding: 25px;\n  background: #eee;\n  color: #000;\n  border: 1px solid black;\n}\n\n" : "";
             string colRevStyle = colRevs.Count > 0 ? "." + String.Join(", .", colRevs.Select(cr => cr.ClassName))
                                 + " {\n  display: flex;\n  flex-direction: column-reverse;\n  flex-wrap: wrap;\n  flex: 1;\n  "
                                 + $"{extraColStyle.Trim()}\n}}\n\n" : "";
-            //+ "padding: 25px;\n  background: #eee;\n  color: #000;\n  border: 1px solid black;\n}\n\n" : "";
+
             rtbOutputCss.Text = $"{labelStyle}{wrapStyle}{rowStyle}{rowRevStyle}{colStyle}{colRevStyle}".Trim();
         }
 
@@ -156,6 +156,7 @@ namespace Flexerator
                         break;
                 }
             }
+
             rtbOutputHtml.Text = "<div class=\"flap-1\">\n" + String.Join("", htmlOut) + "</div>";
 
             // CSS Output
@@ -166,7 +167,6 @@ namespace Flexerator
             }
 
             string extraRowStyle = string.Join(";\n  ", tbRowStyle.Text.Split(';').Select(e => e.Trim()));
-            // cssOut += " {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  flex: 1;\n  padding: 25px;\n  background: #141414;\n  color: #fff;\n  border: 1px solid white;\n}\n\n";
             if (row > 1)
             {
                 cssOut += " {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  flex: 1;\n  " + $"{extraRowStyle.Trim()}\n}}\n\n";
@@ -179,7 +179,6 @@ namespace Flexerator
             }
 
             string extraColStyle = string.Join(";\n  ", tbColStyle.Text.Split(';').Select(e => e.Trim()));
-            //cssOut += " {\n  display: flex;\n  flex-direction: column;\n  flex-wrap: wrap;\n  flex: 1;\n  padding: 25px;\n  background: #eee;\n  color: #000;\n  border: 1px solid black;\n}\n\n";
             if (col > 1)
             {
                 cssOut += " {\n  display: flex;\n  flex-direction: column;\n  flex-wrap: wrap;\n  flex: 1;\n  " + $"{extraColStyle.Trim()}\n}}\n\n";
@@ -191,7 +190,6 @@ namespace Flexerator
             }
 
             string extraWrapStyle = string.Join(";\n  ", tbWraStyle.Text.Split(';').Select(e => e.Trim()));
-            // cssOut += " {\n  display: flex;\n}\n";
             cssOut += " {\n  display: flex;\n  " + $"{extraWrapStyle.Trim()}\n}}\n\n";
 
             rtbOutputCss.Text = cssOut;
