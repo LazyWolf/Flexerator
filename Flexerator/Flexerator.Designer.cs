@@ -53,7 +53,7 @@ namespace Flexerator
             this.rtbInput.Name = "rtbInput";
             this.rtbInput.Size = new System.Drawing.Size(626, 178);
             this.rtbInput.TabIndex = 0;
-            this.rtbInput.Text = "[][]\n[()()]\n([][])";
+            this.rtbInput.Text = "[][]\n[()()()()()]\n([][][][][])";
             // 
             // rtbOutputHtml
             // 
@@ -162,7 +162,7 @@ namespace Flexerator
             this.chLabels.UseVisualStyleBackColor = false;
             this.chLabels.CheckedChanged += new System.EventHandler(this.chLabels_CheckedChanged);
             // 
-            // Form1
+            // Flexerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -178,7 +178,7 @@ namespace Flexerator
             this.Controls.Add(this.panel3);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Form1";
+            this.Name = "Flexerator";
             this.Text = "Flexerator";
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);

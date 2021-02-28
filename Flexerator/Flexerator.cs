@@ -43,7 +43,8 @@ namespace Flexerator
             string[] htmlOut = input.Select(x => $"{x}").ToArray();
             int row = 1;
             int col = 1;
-            int depth = -1;
+            int flap = 2;
+            int depth = 0;
             var openContainers = new List<string>();
 
             for (int i = 0; i < htmlOut.Length; i++)
@@ -56,30 +57,31 @@ namespace Flexerator
                         //openContainers.Add(containerName);
                         string rowLabel = chLabels.Checked ? $"<span style=\"position: absolute; margin: -21px 0 0 -21px\">row-{row}</span>" : "";
 
-                        htmlOut[i] = new String('\t', depth) + $"<div class=\"row-{row}\">" + rowLabel + "\n";
+                        htmlOut[i] = new String(' ', depth * 2) + $"<div class=\"row-{row}\">" + rowLabel + "\n";
                         row += 1;
-                        break;
-                    case "]":
-                        htmlOut[i] = new String('\t', depth) + "</div>\n";
-                        depth -= 1;
                         break;
                     case "(":
                         depth += 1;
                         string colLabel = chLabels.Checked ? $"<span style=\"position: absolute; margin: -21px 0 0 -21px\">col-{col}</span>" : "";
 
-                        htmlOut[i] = new String('\t', depth) + $"<div class=\"col-{col}\">" + colLabel + "\n";
+                        htmlOut[i] = new String(' ', depth * 2) + $"<div class=\"col-{col}\">" + colLabel + "\n";
                         col += 1;
                         break;
+                    case "]":
                     case ")":
-                        htmlOut[i] = new String('\t', depth) + "</div>\n";
+                        htmlOut[i] = new String(' ', depth * 2) + "</div>\n";
                         depth -= 1;
+                        break;
+                    case "\n":
+                        htmlOut[i] = new String(' ', depth * 2) + $"</div>\n<div class=\"flap-{flap}\">\n";
+                        flap++;
                         break;
                     default:
                         htmlOut[i] = "";
                         break;
                 }
             }
-            rtbOutputHtml.Text = String.Join("", htmlOut);
+            rtbOutputHtml.Text = "<div class=\"flap-1\">\n" + String.Join("", htmlOut) + "</div>";
 
             string cssOut = "";
             for (int i = 1; i < row; i++)
@@ -87,14 +89,21 @@ namespace Flexerator
                 cssOut += $".row-{i}" + (i < row-1 ? "," : "");
             }
 
-            cssOut += " {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  padding: 25px;\n  background-color: #141414;\n  color: #fff;\n  border: 1px solid white;\n}\n\n";
+            cssOut += " {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  flex: 1;\n  padding: 25px;\n  background-color: #141414;\n  color: #fff;\n  border: 1px solid white;\n}\n\n";
 
             for (int i = 1; i < col; i++)
             {
                 cssOut += $".col-{i}" + (i < col-1 ? "," : "");
             }
 
-            cssOut += " {\n  display: flex;\n  flex-direction: column;\n  flex-wrap: wrap;\n  padding: 25px;\n  background-color: #eee;\n  color: #000;\n  border: 1px solid black;\n}\n";
+            cssOut += " {\n  display: flex;\n  flex-direction: column;\n  flex-wrap: wrap;\n  flex: 1;\n  padding: 25px;\n  background-color: #eee;\n  color: #000;\n  border: 1px solid black;\n}\n\n";
+
+            for (int i = 1; i < flap; i++)
+            {
+                cssOut += $".flap-{i}" + (i < col - 1 ? "," : "");
+            }
+
+            cssOut += " {\n  display: flex;\n}\n";
 
             rtbOutputCss.Text = cssOut;
         }
