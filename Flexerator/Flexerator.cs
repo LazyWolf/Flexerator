@@ -10,16 +10,6 @@ using System.Windows.Forms;
 
 namespace Flexerator
 {
-    //public class BoxItem
-    //{
-    //    public int Count { get; set; }
-    //    public bool Open { get; set; }
-    //    public BoxItem()
-    //    {
-    //        Count = 0;
-    //        Open = true;
-    //    }
-    //}
     public partial class Flexerator : Form
     {
         public Flexerator()
@@ -35,8 +25,49 @@ namespace Flexerator
         //private Dictionary<string, BoxItem> containers;
         //private List<string> openContainers;
 
+        private void parseFlexItems(string input)
+        {
+            string[] htmlOut = input.Select(x => $"{x}").ToArray();
+            FlexItem currentFlexItem = new FlexItem(type: "flap");
+
+            for (int i = 0; i < htmlOut.Length; i++)
+            {
+                switch (htmlOut[i])
+                {
+                    case "[":
+                        currentFlexItem = currentFlexItem.SpawnFlexItem(type: "row");
+                        break;
+                    case "]":
+                        currentFlexItem = currentFlexItem.Parent;
+                        break;
+                    case "\n":
+                        currentFlexItem = currentFlexItem.Parent == null ? new FlexItem() : currentFlexItem.Parent;
+                        break;
+                    case ">":
+                        currentFlexItem.Type = "row";
+                        currentFlexItem.Direction = "row";
+                        break;
+                    case "<":
+                        currentFlexItem.Type = "row-rev";
+                        currentFlexItem.Direction = "row-reverse";
+                        break;
+                    case "v":
+                        currentFlexItem.Type = "col";
+                        currentFlexItem.Direction = "column";
+                        break;
+                    case "^":
+                        currentFlexItem.Type = "col-rev";
+                        currentFlexItem.Direction = "column-reverse";
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         private void parseToFlex(string input)
         {
+            
             //containers = new Dictionary<string, BoxItem>();
             //openContainers = new List<string>();
 

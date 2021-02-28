@@ -53,7 +53,7 @@ namespace Flexerator
             this.rtbInput.Name = "rtbInput";
             this.rtbInput.Size = new System.Drawing.Size(626, 178);
             this.rtbInput.TabIndex = 0;
-            this.rtbInput.Text = "[][]\n[()()()()()]\n([][][][][])";
+            this.rtbInput.Text = "[][]\n[()()()]([][])\n([][][][][])";
             // 
             // rtbOutputHtml
             // 
